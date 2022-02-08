@@ -1,5 +1,5 @@
 ﻿using System;
-
+//Лабораторная работа №1
 public class Program
 {
     public static void Main(String[] args)
