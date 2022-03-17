@@ -5,13 +5,15 @@ class Program
     {
         int n = Convert.ToInt32(Console.ReadLine()); //Размер одномерного массива
         int m = Convert.ToInt32(Console.ReadLine()); //Размер матрицы
+        int num = Convert.ToInt32(Console.ReadLine()); //n ряда в задаче про сумму ряда
         int[] mas = new int[n]; 
-        int[,] matrix = new int[m, m]; 
-         
-        Console.WriteLine();
-        InputMatr(matrix, m);
-        MatrixSort(matrix, m);
-        OutputMatr(matrix, m);
+        int[,] matrix = new int[m, m];
+        double num1 = Sum(num);
+        int num2 = change(num);
+        Console.WriteLine("Сумма ряда " + num1);
+        Console.WriteLine("Колво перестановок " + num2);
+       
+        
     }
     static void InputMatr(int[,] matrix, int m) // Ввод матрицы
     {
@@ -67,53 +69,29 @@ class Program
     static void MatrixSort(int[,] matrix, int m)
     {
         // Сортировка выборкой для матрицы
-        // Отсортировать все диагонали (вдоль побочной) квадратной матрицы по возрастанию 
-        for (int i = 0; i < m; i++)
+        // Отсортировать все диагонали (вдоль побочной) квадратной матрицы по возрастанию
+        int[,] NewMatrix = new int[m, m];
+        for (int k = 0; k < m; k++)
         {
-            int max = i;
-            for (int j = 0; j < m; j++)
+            int num = 0;
+            for (int i = 0; i < m; i++)
             {
-                if(i > 0 && j > 0 && i < m && j < m)
+                for (int j = 0; j < m; j++)
                 {
-                    if(matrix[i, j] > max)
+                    if (i+j == k)
                     {
-                        max = matrix[i, j];
+                        NewMatrix[i, num] = matrix[i, j];
+                        num++;
                     }
-                    if (i + j % 2 == 0)
+                    if (i+j == k + 1)
                     {
-                        if (matrix[i, i] > max)
-                        {
-                            max = matrix[i, i];
-
-                        }
-                        else
-                        {
-                            Swap(ref matrix[i, j], ref matrix[i, i]);
-                        }
-                        if (matrix[j, i] > max)
-                        {
-                            max = matrix[j, i];
-                        }
-                        else
-                        {
-                            Swap(ref max, ref matrix[j, i]);
-                        }
+                        NewMatrix[i, num] = matrix[i, j];
+                        num++;
                     }
-                    else
-                    {
-                        if (matrix[j, i] > max)
-                        {
-                            max = matrix[j, i];
-                        }
-                        else
-                        {
-                            Swap(ref max, ref matrix[j, i]);
-                        }
-                    }
-                } 
+                }
             }
         }
-
+        OutputMatr(NewMatrix, m);
     }
     static void Swap(ref int a,ref int b)
     {
@@ -121,5 +99,25 @@ class Program
         a = b;
         b = num;
     }
-
+    static double  Sum(int n)
+        // сумма ряда
+    {
+        double result = 0;
+        result += Math.Pow(-1, n - 1) * 1 / Math.Pow(2, n - 1);
+        if (n == 1) {
+            return result;
+        }
+        return Sum(n - 1);
+           
+    }
+    static int change(int n)
+        // колво переставновок 
+    {
+        if(n == 1)
+        {
+            return 1;
+        }
+        return n * change(n - 1);
+    }
+    
 }
